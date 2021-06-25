@@ -1,0 +1,17 @@
+module.exports={
+    name:"x1",
+    async executee(Reflect, xp, currency,Users){
+        Reflect.defineProperty(xp, 'add2', {
+            value: async function add2(id,ammount) {
+                const user = xp.get(id);
+                if (user) {
+                    user.xp +=Number(ammount);
+                    return user.save();
+                }
+                const newUser = await Users.create({ user_id: id, xp: 0 });
+                currency.set(id, newUser);
+                return newUser;
+            },
+        });
+    }
+}
